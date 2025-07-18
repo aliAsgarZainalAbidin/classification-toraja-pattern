@@ -21,6 +21,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -54,8 +55,8 @@ class MainFragment : Fragment(), Detector.DetectorListener {
 
     private lateinit var cameraExecutor: ExecutorService
 
-    private val resultViewModel: ResultViewModel by viewModels()
-    private val mainViewModel: MainViewModel by viewModels()
+    private val resultViewModel: ResultViewModel by activityViewModels<ResultViewModel>()
+    private val mainViewModel: MainViewModel by activityViewModels<MainViewModel>()
 
     val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -263,7 +264,7 @@ class MainFragment : Fragment(), Detector.DetectorListener {
     }
 
     companion object {
-        private const val TAG = "Camera"
+        private const val TAG = "MainFragment"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = mutableListOf(
             Manifest.permission.CAMERA

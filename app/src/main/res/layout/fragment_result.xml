@@ -4,6 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.devalid.yolov8tflite.view.result.ResultFragment">
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/siv_result_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
