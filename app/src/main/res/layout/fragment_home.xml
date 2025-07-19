@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_home"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/iv_home_toraja"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/icon_toraja"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/accent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_home_toraja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:fontFamily="monospace"
+        app:layout_constraintEnd_toEndOf="@id/iv_home_toraja"
+        app:layout_constraintStart_toStartOf="@id/iv_home_toraja"
+        app:layout_constraintTop_toBottomOf="@id/iv_home_toraja"
+        tools:text="Batik Toraja" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_home_camera"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:text="Camera"
+        android:textColor="@color/background"
+        app:backgroundTint="@color/accent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/mtv_home_toraja"
+        app:layout_constraintStart_toStartOf="@id/mtv_home_toraja"
+        app:layout_constraintTop_toBottomOf="@id/mtv_home_toraja" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mb_home_galery"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Gallery"
+        android:textColor="@color/background"
+        app:backgroundTint="@color/accent"
+        app:layout_constraintEnd_toEndOf="@id/mb_home_camera"
+        app:layout_constraintStart_toStartOf="@id/mb_home_camera"
+        app:layout_constraintTop_toBottomOf="@id/mb_home_camera" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

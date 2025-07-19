@@ -5,4 +5,10 @@
     <color name="bounding_box_color">#234567</color>
     <color name="gray">#999</color>
     <color name="orange">#F93</color>
+
+    <color name="background">#000000</color>
+    <color name="primary">#8B0000</color>
+    <color name="secondary">#B22222</color>
+    <color name="accent">#FFD700</color>
+    <color name="text">#FFFFFF</color>
 </resources>

@@ -132,6 +132,7 @@ class Detector(
         val bestBoxes = bestBox(output.floatArray)
         inferenceTime = SystemClock.uptimeMillis() - inferenceTime
 
+
         if (bestBoxes == null) {
             detectorListener.onEmptyDetect()
             return
