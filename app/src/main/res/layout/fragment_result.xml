@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:scaleType="fitCenter" />
 
-    <com.devalid.yolov8tflite.util.OverlayView
+    <com.devalid.yolov8tflite.view.components.OverlayView
         android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

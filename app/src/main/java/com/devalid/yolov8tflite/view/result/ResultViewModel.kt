@@ -4,6 +4,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.devalid.yolov8tflite.util.PatternType
 import com.devalid.yolov8tflite.view.result.effect.ResultScreenEffect
 import com.devalid.yolov8tflite.view.result.event.ResultScreenEvent
 import com.devalid.yolov8tflite.view.result.state.ResultScreenState
@@ -48,6 +49,12 @@ class ResultViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             _resultScreenState.update { it.copy(uri = uri) }
             Log.d(TAG, "onImageSelected: ${resultScreenState.value.uri}")
+        }
+    }
+
+    fun updatePattern(patterns : List<PatternType>) {
+        viewModelScope.launch {
+            _resultScreenState.update { it.copy(patterns = patterns) }
         }
     }
 

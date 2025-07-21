@@ -1,4 +1,4 @@
-package com.devalid.yolov8tflite.util
+package com.devalid.yolov8tflite.view.components
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,6 +8,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.devalid.yolov8tflite.util.BoundingBox
 import yolov8tflite.R
 
 class OverlayView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {

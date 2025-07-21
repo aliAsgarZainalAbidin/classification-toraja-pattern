@@ -27,9 +27,14 @@ import com.devalid.yolov8tflite.util.BoundingBox
 import com.devalid.yolov8tflite.util.Constants.LABELS_PATH
 import com.devalid.yolov8tflite.util.Constants.MODEL_PATH
 import com.devalid.yolov8tflite.util.Detector
+import com.devalid.yolov8tflite.util.PatternType
+import com.devalid.yolov8tflite.view.components.BottomSheetDialogPattern
 import com.devalid.yolov8tflite.view.main.MainViewModel
+import com.devalid.yolov8tflite.view.result.state.ResultScreenState
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -72,7 +77,6 @@ class ResultFragment : Fragment(), Detector.DetectorListener {
 
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
-
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 resultViewModel.resultScreenState.collect { state ->
@@ -99,7 +103,6 @@ class ResultFragment : Fragment(), Detector.DetectorListener {
     }
 
     private fun uriToBitmap(uri: Uri): android.graphics.Bitmap? {
-
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val source = ImageDecoder.createSource(
@@ -132,9 +135,23 @@ class ResultFragment : Fragment(), Detector.DetectorListener {
 
     override fun onDetect(boundingBoxes: List<BoundingBox>, inferenceTime: Long) {
         requireActivity().runOnUiThread {
+            val modal = BottomSheetDialogPattern()
+            val standartModalBehavior = modal.view?.let { BottomSheetBehavior.from(it) }
+            standartModalBehavior?.isHideable = false
+            standartModalBehavior?.isDraggable = true
+
             binding.overlay.apply {
                 setResults(boundingBoxes)
+                val patterns = boundingBoxes.map { PatternType(name = it.clsName, desc = "") }.toList()
+                resultViewModel.updatePattern(patterns)
                 invalidate()
+                setOnClickListener{
+                    modal.show(childFragmentManager, BottomSheetDialogPattern.TAG)
+                }
+            }
+
+            binding.apply {
+                modal.show(childFragmentManager, BottomSheetDialogPattern.TAG)
             }
         }
     }
