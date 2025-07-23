@@ -3,6 +3,7 @@ package com.devalid.yolov8tflite.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.SystemClock
+import android.util.Log
 import com.devalid.yolov8tflite.util.MetaData.extractNamesFromLabelFile
 import com.devalid.yolov8tflite.util.MetaData.extractNamesFromMetadata
 import org.tensorflow.lite.DataType
@@ -51,11 +52,17 @@ class Detector(
 
         val model = FileUtil.loadMappedFile(context, modelPath)
         interpreter = Interpreter(model, options)
+        Log.d("Detector", "modelPath: $modelPath")
 
         val inputShape = interpreter.getInputTensor(0)?.shape()
         val outputShape = interpreter.getOutputTensor(0)?.shape()
 
         labels.addAll(extractNamesFromMetadata(model))
+        val templabel = extractNamesFromMetadata(model)
+        Log.d("Detector", "tempLabel Size: ${templabel.size}")
+        templabel.map {
+            Log.d("Detector", "label : $it")
+        }
         if (labels.isEmpty()) {
             if (labelPath == null) {
                 message("Model not contains metadata, provide LABELS_PATH in Constants.kt")
