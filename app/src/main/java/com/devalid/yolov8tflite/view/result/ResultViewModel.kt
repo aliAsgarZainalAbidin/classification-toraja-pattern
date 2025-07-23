@@ -1,10 +1,13 @@
 package com.devalid.yolov8tflite.view.result
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.devalid.yolov8tflite.util.PatternType
+import com.devalid.yolov8tflite.util.jsonToMap
+import com.devalid.yolov8tflite.util.readJsonFromRaw
 import com.devalid.yolov8tflite.view.result.effect.ResultScreenEffect
 import com.devalid.yolov8tflite.view.result.event.ResultScreenEvent
 import com.devalid.yolov8tflite.view.result.state.ResultScreenState
@@ -15,6 +18,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import yolov8tflite.R
 import javax.inject.Inject
 
 
@@ -54,7 +58,18 @@ class ResultViewModel @Inject constructor() : ViewModel() {
 
     fun updatePattern(patterns : List<PatternType>) {
         viewModelScope.launch {
+            Log.d(TAG, "updatePattern: $patterns")
             _resultScreenState.update { it.copy(patterns = patterns) }
+        }
+    }
+
+    fun loadPatternLabels(appContext: Context) {
+        viewModelScope.launch {
+            val jsonString = readJsonFromRaw(appContext, R.raw.label)
+            if (jsonString != null) {
+                val patternMap = jsonToMap(jsonString)
+                _resultScreenState.update { it.copy(patternMap = patternMap) }
+            }
         }
     }
 

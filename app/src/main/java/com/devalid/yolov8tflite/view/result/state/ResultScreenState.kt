@@ -6,5 +6,6 @@ import com.devalid.yolov8tflite.util.PatternType
 data class ResultScreenState(
     val isLoading: Boolean = false,
     val uri : Uri? = null,
-    val patterns : List<PatternType> = emptyList()
+    val patterns : List<PatternType> = emptyList(),
+    val patternMap : Map<String, String> = emptyMap()
 )

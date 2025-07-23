@@ -28,6 +28,8 @@ import com.devalid.yolov8tflite.util.Constants.LABELS_PATH
 import com.devalid.yolov8tflite.util.Constants.MODEL_PATH
 import com.devalid.yolov8tflite.util.Detector
 import com.devalid.yolov8tflite.util.PatternType
+import com.devalid.yolov8tflite.util.jsonToMap
+import com.devalid.yolov8tflite.util.readJsonFromRaw
 import com.devalid.yolov8tflite.view.components.BottomSheetDialogPattern
 import com.devalid.yolov8tflite.view.main.MainViewModel
 import com.devalid.yolov8tflite.view.result.state.ResultScreenState
@@ -38,6 +40,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONObject
 import org.tensorflow.lite.support.image.TensorImage
 import yolov8tflite.R
 import yolov8tflite.databinding.FragmentResultBinding
@@ -76,6 +80,7 @@ class ResultFragment : Fragment(), Detector.DetectorListener {
         super.onViewCreated(view, savedInstanceState)
 
         backgroundExecutor = Executors.newSingleThreadExecutor()
+        resultViewModel.loadPatternLabels(requireContext())
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -134,25 +139,30 @@ class ResultFragment : Fragment(), Detector.DetectorListener {
     }
 
     override fun onDetect(boundingBoxes: List<BoundingBox>, inferenceTime: Long) {
+
         requireActivity().runOnUiThread {
-            val modal = BottomSheetDialogPattern()
-            val standartModalBehavior = modal.view?.let { BottomSheetBehavior.from(it) }
-            standartModalBehavior?.isHideable = false
-            standartModalBehavior?.isDraggable = true
 
             binding.overlay.apply {
                 setResults(boundingBoxes)
-                val patterns = boundingBoxes.map { PatternType(name = it.clsName, desc = "") }.toList()
+                val patterns = boundingBoxes.map { cls ->
+                    PatternType(
+                        cls.clsName,
+                        resultViewModel.resultScreenState.value.patternMap[cls.clsName] ?: ""
+                    )
+                }.toList()
                 resultViewModel.updatePattern(patterns)
                 invalidate()
-                setOnClickListener{
+
+                setOnClickListener {
+                    val modal = BottomSheetDialogPattern()
+                    val standartModalBehavior = modal.view?.let { BottomSheetBehavior.from(it) }
+                    standartModalBehavior?.isHideable = false
+                    standartModalBehavior?.isDraggable = true
+
                     modal.show(childFragmentManager, BottomSheetDialogPattern.TAG)
                 }
             }
-
-            binding.apply {
-                modal.show(childFragmentManager, BottomSheetDialogPattern.TAG)
-            }
         }
+
     }
 }
